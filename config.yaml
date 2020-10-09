@@ -1,0 +1,4 @@
+account:
+    - { lastupdated: "2090-10-09T21:41:16", url: dummy }
+    - { lastupdated: "2090-10-09T10:15:51", url: dummy }
+channel: 100000000000000000
