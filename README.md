@@ -1,0 +1,2 @@
+# rsscheckerbot
+RSSの更新があればdiscordのチャンネルに書き込んでくれるbotです
