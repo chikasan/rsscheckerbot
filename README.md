@@ -17,4 +17,17 @@ RSSの更新があればDiscordのチャンネルに書き込んでくれるbot�
    python3 rsscheckerbot.py
    ```
 1. 起動に成功すると60分に1回、config.yamlに記載したURLの更新を確認します。
+    
     * 更新が見つかった場合は、その情報をDiscordのチャンネルに書き込みます。
+
+## 動作確認
+
+* 環境1
+  * Windows10 64bit
+  * Python 3.7.6
+  * discord.py 1.5.0
+* 環境2
+  * Raspberry PI OS buster 10.4
+  * Python 3.7.3
+  * discord.py 1.5.0
+

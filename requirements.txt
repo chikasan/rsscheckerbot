@@ -1,4 +1,5 @@
 discord.py==1.5.0
-ruamel.yaml==0.16.12
-ruamel.yaml.clib==0.2.2
-sgmllib3k==1.0.0
+ruamel.yaml
+ruamel.yaml.clib
+feedparser
+sgmllib3k
