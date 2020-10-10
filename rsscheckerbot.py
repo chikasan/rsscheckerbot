@@ -36,10 +36,10 @@ if __name__ == '__main__':
     logger.addHandler(handler)
     logger.propagate = False
 
-    intents = discord.Intents.all()
+    intents = discord.Intents.default()
     client = RssCheckerBot(logger, intents)
 
-    TOKEN = os.environ['TOKEN']
+    TOKEN = os.environ['RSSBOT_TOKEN']
 
     try:
         client.loop.run_until_complete(client.start(TOKEN))
