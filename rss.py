@@ -27,7 +27,7 @@ class RssChecker(commands.Cog):
         else:
             self.logger.info('書き込みチャンネルが見つかりません')
 
-    @tasks.loop(seconds=600)
+    @tasks.loop(seconds=3600)
     async def checker(self):
         for url in self.yaml_data['account']:
             self.logger.info('url: ' + url['url'] + ' の確認')
