@@ -29,9 +29,9 @@ RSSの更新があればDiscordのチャンネルに書き込んでくれるbot�
 * 環境1
   * Windows10 64bit
   * Python 3.7.6
-  * discord.py 1.5.0
+  * discord.py 1.5.1
 * 環境2
   * Raspberry PI OS buster 10.4
   * Python 3.7.3
-  * discord.py 1.5.0
+  * discord.py 1.5.1
 
