@@ -1,6 +1,7 @@
 from datetime import datetime
 from time import mktime
 from logging import getLogger
+import traceback
 
 from discord.ext import commands, tasks
 import feedparser
@@ -29,29 +30,35 @@ class RssChecker(commands.Cog):
 
     @tasks.loop(seconds=3600)
     async def checker(self):
-        for url in self.yaml_data['account']:
-            self.logger.info('url: ' + url['url'] + ' の確認')
-            d = feedparser.parse(url['url'])
+        try:
+            for url in self.yaml_data['account']:
+                self.logger.info('url: ' + url['url'] + ' の確認')
+                d = feedparser.parse(url['url'])
 
-            last_call = datetime.fromisoformat(url['lastupdated'])
-            last_updated = datetime.fromtimestamp(
-                mktime(d.updated_parsed) + 3600*9)
+                last_call = datetime.fromisoformat(url['lastupdated'])
+                last_updated = datetime.fromtimestamp(
+                    mktime(d.updated_parsed) + 3600*9)
 
-            if last_updated > last_call:
-                self.logger.info('最終更新:' + d['updated'] + ' 更新があります')
-                for entries in reversed(d['entries']):
-                    update = datetime.fromtimestamp(
-                        mktime(entries.updated_parsed) + 3600*9)
-                    if update > last_call:
-                        message = (entries['title'] + ' '
-                                   + entries['updated'] + ' '
-                                   + entries['link'])
-                        await self.sendmessage(message)
-                url['lastupdated'] = last_updated.isoformat()
-                with open('config.yaml', 'w') as stream:
-                    yaml.dump(self.yaml_data, stream=stream)
-            else:
-                self.logger.info('最終更新:' + d['updated'] + ' 更新はありません')
+                if last_updated > last_call:
+                    self.logger.info('最終更新:' + d['updated'] + ' 更新があります')
+                    for entries in reversed(d['entries']):
+                        update = datetime.fromtimestamp(
+                            mktime(entries.updated_parsed) + 3600*9)
+                        if update > last_call:
+                            message = (entries['title'] + ' '
+                                       + entries['updated'] + ' '
+                                       + entries['link'])
+                            await self.sendmessage(message)
+                    url['lastupdated'] = last_updated.isoformat()
+                    with open('config.yaml', 'w') as stream:
+                        yaml.dump(self.yaml_data, stream=stream)
+                else:
+                    self.logger.info('最終更新:' + d['updated'] + ' 更新はありません')
+        except Exception:
+            message = '処理中に問題が発生しました。エラーログを確認してください。'
+            self.logger.info(message)
+            print(traceback.format_exc())
+            await self.sendmessage(message)
 
     @checker.before_loop
     async def before_checker(self):
