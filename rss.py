@@ -35,6 +35,13 @@ class RssChecker(commands.Cog):
                 self.logger.info('url: ' + url['url'] + ' の確認')
                 d = feedparser.parse(url['url'])
 
+                if d.bozo == 1:
+                    self.logger.info('Error: RSSの取得に失敗しました。')
+                    self.logger.info(d.bozo_exception)
+                    await self.sendmessage(url['url'] + ' の取得に失敗しました。'
+                                           + d.bozo_exception)
+                    continue
+
                 last_call = datetime.fromisoformat(url['lastupdated'])
                 last_updated = datetime.fromtimestamp(
                     mktime(d.updated_parsed) + 3600*9)
@@ -54,6 +61,11 @@ class RssChecker(commands.Cog):
                         yaml.dump(self.yaml_data, stream=stream)
                 else:
                     self.logger.info('最終更新:' + d['updated'] + ' 更新はありません')
+        except AttributeError:
+            message = '要素参照エラーが発生しました。エラーログを確認してください。'
+            self.logger.info(message)
+            print(traceback.format_exc())
+            await self.sendmessage(message)
         except Exception:
             message = '処理中に問題が発生しました。エラーログを確認してください。'
             self.logger.info(message)
